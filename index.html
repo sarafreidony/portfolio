@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sara Freidoony | Illustrator & Character Designer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    body {
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      width: 100%;
+      max-width: 479px;
+      height: auto;
+      aspect-ratio: 4795/1750;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    
+    header {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 40px;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+    }
+    
+    nav ul li {
+      margin: 0 20px;
+    }
+    
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    
+    nav ul li a:hover {
+      color: #999;
+    }
+    
+    .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Change minmax(300px, 1fr) to minmax(250px, 1fr) */
+    grid-gap: 20px;
+    }
+    
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      height: 300px;
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+    
+    /* About Page */
+    .about-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    
+    .about-image {
+      flex: 1;
+      padding-right: 30px;
+    }
+    
+    .about-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50%;
+    }
+    
+    .about-content {
+      flex: 2;
+    }
+    
+    .about-content p {
+      margin-bottom: 20px;
+    }
+    
+    /* Contact Page */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    .form-group textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    
+    button[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: #555;
+    }
+    
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 30px;
+    }
+    
+    .lightbox.active {
+      display: flex;
+    }
+    
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+    }
+    
+    .lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    transform-origin: center center;
+    transition: transform 0.3s ease;
+    cursor: grab;
+    }
+
+    
+    .lightbox-caption {
+      color: #fff;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
+      color: #fff;
+      cursor: pointer;
+    }
+    
+    .prev-btn, .next-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      background: none;
+      border: none;
+      font-size: 40px;
+      cursor: pointer;
+      padding: 0 15px;
+    }
+    
+    .prev-btn {
+      left: 20px;
+    }
+    
+    .next-btn {
+      right: 20px;
+    }
+    
+    /* Footer */
+    footer {
+      margin-top: 60px;
+      padding: 20px 0;
+      text-align: center;
+      border-top: 1px solid #eee;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .social-links {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .social-links a {
+      margin: 0 15px;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .social-links a:hover {
+      color: #999;
+    }
+    
+    .social-links svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .email-link {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 15px;
+    }
+    
+    .email-link svg {
+      margin-right: 5px;
+    }
+    
+    /* Page visibility */
+    .page {
+      display: none;
+    }
+    
+    .page.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      nav ul {
+        flex-wrap: wrap;
+      }
+      
+      nav ul li {
+        margin: 0 10px 10px;
+      }
+      
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      
+      .about-container {
+        flex-direction: column;
+      }
+      
+      .about-image {
+        flex: 1 0 100%;
+        padding-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      .about-content {
+        flex: 1 0 100%;
+      }
+      
+      .social-links {
+        flex-wrap: wrap;
+      }
+      
+      .social-links a {
+        margin: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <a href="#" data-page="illustration">
+        <img src="images/other/header.jpg" alt="Sara Freidoony Logo" class="logo">
+      </a>
+    </div>
+    
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#" data-page="illustration">Illustration</a></li>
+          <li><a href="#" data-page="sketchbook">Sketchbook</a></li>
+          <li><a href="#" data-page="about">About</a></li>
+          <li><a href="#" data-page="contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <main>
+      <!-- Illustration Page (Main Page) -->
+      <div id="illustration" class="page active">
+        <div class="gallery">
+          <div class="gallery-item" data-title="Character Design: Elven Warrior">
+            <img src="images/illustration/illustration_chicken.jpg" alt="Character Design: Elven Warrior">
+          </div>
+          <div class="gallery-item" data-title="Environmental Concept Art">
+            <img src="images/illustration/illustration_tiny_doll_1.jpg" alt="Environmental Concept Art">
+          </div>
+          <div class="gallery-item" data-title="Comic Panel: Urban Fantasy">
+            <img src="images/illustration/illustration_hansel.jpg" alt="Comic Panel: Urban Fantasy">
+          </div>
+          <div class="gallery-item" data-title="Character Design: Cyberpunk Protagonist">
+            <img src="images/illustration/illustration_lamb.jpg" alt="Character Design: Cyberpunk Protagonist">
+          </div>
+          <div class="gallery-item" data-title="Book Illustration: Children's Fantasy">
+            <img src="images/illustration/illustration_rabbit.jpg" alt="Book Illustration: Children's Fantasy">
+          </div>
+          <div class="gallery-item" data-title="Character Design: Steampunk Engineer">
+            <img src="images/illustration/illustration_ant.jpg" alt="Character Design: Steampunk Engineer">
+          </div>
+          <div class="gallery-item" data-title="Editorial Illustration: Science Magazine">
+            <img src="images/illustration/illustration_noah_4.jpg" alt="Editorial Illustration: Science Magazine">
+          </div>
+          <div class="gallery-item" data-title="Character Design: Magical Creatures">
+            <img src="images/illustration/illustration_noah_2.jpg" alt="Character Design: Magical Creatures">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_noah_1.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_noah_characters.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_little_girl.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_tiny_doll_2.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_alligator_2.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_alligator_3.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_alligator_1.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_thumbelina_1.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_wishes.jpg" alt="Concept Art: Futuristic City">
+          </div>
+          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+            <img src="images/illustration/illustration_school.jpg" alt="Concept Art: Futuristic City">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sketchbook Page -->
+      <div id="sketchbook" class="page">
+        <div class="gallery">
+          <div class="gallery-item" data-title="Sketch: Character Study">
+            <img src="images/sketchbook/sketch_guitarist.jpg" alt="Sketch: Character Study">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Environment Concept">
+            <img src="images/sketchbook/sketch_mom.jpg" alt="Sketch: Environment Concept">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Motion Studies">
+            <img src="images/sketchbook/sketch_sara.jpg" alt="Sketch: Motion Studies">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Character Expressions">
+            <img src="images/sketchbook/sketch_witch.jpg" alt="Sketch: Character Expressions">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Quick Concepts">
+            <img src="images/sketchbook/sketch_ballerina.jpg" alt="Sketch: Quick Concepts">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Creature Designs">
+            <img src="images/sketchbook/sketch_mermaid.jpg" alt="Sketch: Creature Designs">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Urban Scenes">
+            <img src="images/sketchbook/sketch_love.jpg" alt="Sketch: Urban Scenes">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Nature Studies">
+            <img src="images/sketchbook/sketch_tree.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Nature Studies">
+            <img src="images/sketchbook/sketch_leaves.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Nature Studies">
+            <img src="images/sketchbook/sketch_rabbit_storyboard.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="Sketch: Nature Studies">
+            <img src="images/sketchbook/sketch_hansel.jpg" alt="Sketch: Nature Studies">
+          </div>
+        </div>
+      </div>
+      
+      <!-- About Page -->
+      <div id="about" class="page">
+        <div class="about-container">
+          <div class="about-image">
+            <img src="images/other/profile.jpg" alt="Sara Freidoony Portrait">
+          </div>
+          <div class="about-content">
+            <p>Hello! I'm Sara Freidoony, an international illustrator and character designer with a passion for crafting imaginative worlds. I specialize in bringing stories to life through art, with a focus on children's perspectives—capturing the magic, wonder, and softness they see in the world around them. My illustrations blend gentle colors and expressive characters to evoke a sense of light and warmth.</p>
+            
+            <p>With experience collaborating with publishers and magazines, I've honed my craft to create visuals that resonate and inspire. I'm driven by a love for storytelling and am always excited to explore new creative opportunities. Before pursuing my career in illustration, I graduated from the University of Tehran, one of the top art institutions in my home country, where I ranked third in my field and third in the national university entrance exam—a foundation that fuels my dedication to excellence.</p>
+            
+            <p>I'm eager to connect with clients and collaborators who share a love for whimsical, heartfelt design. Let's create something magical together!</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contact Page -->
+      <div id="contact" class="page">
+        <div class="contact-form">
+          <h2>Get in Touch</h2>
+          <p>Drop me a note using the form below. I look forward to hearing from you!</p>
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <div class="social-links">
+        <!-- Instagram Icon -->
+        <a href="https://www.instagram.com/art.of.sara.fr" target="_blank" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        
+        <!-- LinkedIn Icon -->
+        <a href="https://www.linkedin.com/in/sara-freidoony" target="_blank" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+        
+        <!-- Behance Icon -->
+        <a href="https://www.behance.net/sarafreidoony" target="_blank" aria-label="Behance">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1.5 8.67h8.59c1.97 0 3.38 1.46 3.38 3.3s-1.41 3.3-3.38 3.3H1.5v-6.6z"></path>
+            <path d="M1.5 15.27h9.11c1.97 0 3.72 1.85 3.72 3.69 0 1.84-1.75 3.69-3.72 3.69H1.5V15.27z"></path>
+            <path d="M16.5 15.27h6"></path>
+            <path d="M16.5 8.67h6"></path>
+            <path d="M19.5 8.67v6.6"></path>
+          </svg>
+        </a>
+        
+        <!-- Email Icon -->
+        <a href="mailto:sarafreidoony@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </a>
+      </div>
+      <p>&copy; 2025 Sara Freidoony. All rights reserved.</p>
+    </footer>
+  </div>
+  
+  <!-- Lightbox -->
+  <div class="lightbox">
+    <div class="close-lightbox">&times;</div>
+    <button class="prev-btn">&lt;</button>
+    <div class="lightbox-content">
+      <img src="" alt="" class="lightbox-image">
+      <div class="lightbox-caption"></div>
+    </div>
+    <button class="next-btn">&gt;</button>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Page navigation
+      const navLinks = document.querySelectorAll('nav a, .logo-container a');
+      const pages = document.querySelectorAll('.page');
+      
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetPage = this.getAttribute('data-page');
+          
+          // Hide all pages
+          pages.forEach(page => {
+            page.classList.remove('active');
+          });
+          
+          // Show target page
+          document.getElementById(targetPage).classList.add('active');
+        });
+      });
+      
+      // Lightbox functionality for both galleries
+      const setupGallery = (galleryId) => {
+        const gallery = document.getElementById(galleryId);
+        if (!gallery) return;
+        
+        const galleryItems = gallery.querySelectorAll('.gallery-item');
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = document.querySelector('.lightbox-image');
+        const lightboxCaption = document.querySelector('.lightbox-caption');
+        const closeLightbox = document.querySelector('.close-lightbox');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        
+        let currentIndex = 0;
+        let currentGalleryItems = [];
+        
+        // Open lightbox
+        galleryItems.forEach((item, index) => {
+          item.addEventListener('click', () => {
+            currentIndex = index;
+            currentGalleryItems = galleryItems;
+            
+            const imgSrc = item.querySelector('img').getAttribute('src');
+            const imgAlt = item.querySelector('img').getAttribute('alt');
+            const imgTitle = item.getAttribute('data-title');
+            
+            lightboxImage.setAttribute('src', imgSrc);
+            lightboxImage.setAttribute('alt', imgAlt);
+            lightboxCaption.textContent = imgTitle;
+            
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+          });
+        });
+      };
+      
+      // Setup lightbox for both galleries
+      setupGallery('illustration');
+      setupGallery('sketchbook');
+      
+      // Close lightbox
+      const lightbox = document.querySelector('.lightbox');
+      const closeLightbox = document.querySelector('.close-lightbox');
+      const lightboxImage = document.querySelector('.lightbox-image');
+      const lightboxCaption = document.querySelector('.lightbox-caption');
+      const prevBtn = document.querySelector('.prev-btn');
+      const nextBtn = document.querySelector('.next-btn');
+      
+      closeLightbox.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+      });
+      
+      // Close on click outside image
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Next image
+      nextBtn.addEventListener('click', () => {
+        const activePage = document.querySelector('.page.active');
+        const galleryItems = activePage.querySelectorAll('.gallery-item');
+        let currentIndex = Array.from(galleryItems).findIndex(item => 
+          item.querySelector('img').getAttribute('src') === lightboxImage.getAttribute('src')
+        );
+        
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        updateLightboxContent(galleryItems[currentIndex]);
+      });
+      
+      // Previous image
+      prevBtn.addEventListener('click', () => {
+        const activePage = document.querySelector('.page.active');
+        const galleryItems = activePage.querySelectorAll('.gallery-item');
+        let currentIndex = Array.from(galleryItems).findIndex(item => 
+          item.querySelector('img').getAttribute('src') === lightboxImage.getAttribute('src')
+        );
+        
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        updateLightboxContent(galleryItems[currentIndex]);
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        } else if (e.key === 'ArrowRight') {
+          nextBtn.click();
+        } else if (e.key === 'ArrowLeft') {
+          prevBtn.click();
+        }
+      });
+      
+      // Update lightbox content
+      function updateLightboxContent(item) {
+        const imgSrc = item.querySelector('img').getAttribute('src');
+        const imgAlt = item.querySelector('img').getAttribute('alt');
+        const imgTitle = item.getAttribute('data-title');
+        
+        lightboxImage.setAttribute('src', imgSrc);
+        lightboxImage.setAttribute('alt', imgAlt);
+        lightboxCaption.textContent = imgTitle;
+      }
+      
+      // Contact form functionality
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          // In a real implementation, you would send the form data to a server
+          alert('Thank you for your message! I will get back to you soon.');
+          contactForm.reset();
+        });
+      }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const lightboxImage = document.querySelector(".lightbox-image");
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY, moveX = 0, moveY = 0;
+
+        // Zoom functionality using mouse wheel
+        lightboxImage.addEventListener("wheel", function (e) {
+            e.preventDefault();
+            const scaleFactor = 0.1;
+            if (e.deltaY < 0) {
+                scale += scaleFactor; // Zoom in
+            } else {
+                scale = Math.max(1, scale - scaleFactor); // Zoom out, minimum scale = 1
+            }
+            lightboxImage.style.transform = `scale(${scale}) translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Enable drag when zoomed in
+        lightboxImage.addEventListener("mousedown", function (e) {
+            if (scale > 1) {
+                isDragging = true;
+                startX = e.clientX - moveX;
+                startY = e.clientY - moveY;
+                lightboxImage.style.cursor = "grabbing";
+            }
+        });
+
+        document.addEventListener("mousemove", function (e) {
+            if (isDragging) {
+                moveX = e.clientX - startX;
+                moveY = e.clientY - startY;
+                lightboxImage.style.transform = `scale(${scale}) translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+
+        document.addEventListener("mouseup", function () {
+            isDragging = false;
+            lightboxImage.style.cursor = "grab";
+        });
+
+        // Reset zoom when closing the lightbox
+        document.querySelector(".close-lightbox").addEventListener("click", function () {
+            scale = 1;
+            moveX = 0;
+            moveY = 0;
+            lightboxImage.style.transform = `scale(1) translate(0, 0)`;
+        });
+    });
+  </script>
+</body>
+</html>
