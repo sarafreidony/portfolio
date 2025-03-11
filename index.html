@@ -777,19 +777,37 @@
         
         // Change the image after a short delay (for smooth transition)
         setTimeout(() => {
-          lightboxImage.setAttribute('src', imgSrc);
-          lightboxImage.setAttribute('alt', imgAlt);
+          // Create a new image element to preload the image
+          const tempImg = new Image();
           
-          // Make sure the title is displayed in the caption
-          if (imgTitle) {
-            lightboxCaption.textContent = imgTitle;
-            lightboxCaption.style.display = 'block';
-          } else {
-            lightboxCaption.style.display = 'none';
-          }
+          // Set up event handlers before setting the src
+          tempImg.onload = function() {
+            // Once the image is loaded, update the lightbox image
+            lightboxImage.setAttribute('src', imgSrc);
+            lightboxImage.setAttribute('alt', imgAlt);
+            
+            // Make sure the title is displayed in the caption
+            if (imgTitle) {
+              lightboxCaption.textContent = imgTitle;
+              lightboxCaption.style.display = 'block';
+            } else {
+              lightboxCaption.style.display = 'none';
+            }
+            
+            // Fade in effect
+            lightboxImage.style.opacity = '1';
+          };
           
-          // Fade in effect
-          lightboxImage.style.opacity = '1';
+          tempImg.onerror = function() {
+            console.error('Failed to load image:', imgSrc);
+            // Still attempt to show the image in case the error is transient
+            lightboxImage.setAttribute('src', imgSrc);
+            lightboxImage.setAttribute('alt', imgAlt);
+            lightboxImage.style.opacity = '1';
+          };
+          
+          // Start loading the image
+          tempImg.src = imgSrc;
         }, 300);
       }
       
