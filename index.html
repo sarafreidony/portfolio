@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sara Freidoony | Illustrator & Character Designer</title>
+  <link rel="stylesheet" href="fonts/font-face.css">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Aspekta', 'Helvetica Neue', Arial, sans-serif;
     }
     
     body {
@@ -57,7 +58,7 @@
     
     nav ul li a {
       text-decoration: none;
-      color: #333;
+      color: #444444;
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -65,12 +66,16 @@
     }
     
     nav ul li a:hover {
-      color: #999;
+      color: #DAA520;
+    }
+    
+    nav ul li a.active {
+      color: #B8860B;
     }
     
     .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Change minmax(300px, 1fr) to minmax(250px, 1fr) */
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
     }
     
@@ -86,6 +91,8 @@
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
+      pointer-events: none; /* Prevents direct interaction */
+      user-select: none;
     }
     
     .gallery-item:hover img {
@@ -125,6 +132,10 @@
       margin: 0 auto;
     }
     
+    .contact-form h2 {
+      color: #B8860B;
+    }
+    
     .form-group {
       margin-bottom: 20px;
     }
@@ -133,6 +144,7 @@
       display: block;
       margin-bottom: 5px;
       font-weight: 500;
+      color: #B8860B;
     }
     
     .form-group input,
@@ -150,7 +162,7 @@
     }
     
     button[type="submit"] {
-      background-color: #333;
+      background-color: #B8860B;
       color: #fff;
       border: none;
       padding: 12px 24px;
@@ -162,7 +174,7 @@
     }
     
     button[type="submit"]:hover {
-      background-color: #555;
+      background-color: #9F7319;
     }
     
     /* Lightbox */
@@ -188,32 +200,49 @@
       position: relative;
       max-width: 90%;
       max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 50px;
     }
     
     .lightbox-image {
-    max-width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
-    transform-origin: center center;
-    transition: transform 0.3s ease;
-    cursor: grab;
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      transform-origin: center center;
+      transition: opacity 0.3s ease;
     }
-
     
     .lightbox-caption {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 15px;
       color: #fff;
       text-align: center;
-      margin-top: 15px;
-      font-size: 0.9rem;
+      font-size: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 0;
     }
     
     .close-lightbox {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 30px;
+      top: 15px;
+      right: 25px;
       color: #fff;
+      font-size: 3.5rem;
       cursor: pointer;
+      z-index: 1010;
+      padding: 10px;
+      transition: color 0.3s ease;
+    }
+    
+    .close-lightbox:hover {
+      color: #DAA520;
     }
     
     .prev-btn, .next-btn {
@@ -221,19 +250,37 @@
       top: 50%;
       transform: translateY(-50%);
       color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
       background: none;
       border: none;
-      font-size: 40px;
-      cursor: pointer;
-      padding: 0 15px;
+      padding: 20px;
+      z-index: 1010;
     }
     
     .prev-btn {
-      left: 20px;
+      left: 10px;
     }
     
     .next-btn {
-      right: 20px;
+      right: 10px;
+    }
+    
+    .navigation-overlay {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 1005;
+      cursor: pointer;
+    }
+    
+    .left-overlay {
+      left: 0;
+    }
+    
+    .right-overlay {
+      right: 0;
     }
     
     /* Footer */
@@ -255,7 +302,7 @@
     
     .social-links a {
       margin: 0 15px;
-      color: #555;
+      color: #B8860B;
       text-decoration: none;
       transition: color 0.3s ease;
       display: flex;
@@ -264,7 +311,7 @@
     }
     
     .social-links a:hover {
-      color: #999;
+      color: #DAA520;
     }
     
     .social-links svg {
@@ -289,6 +336,15 @@
     
     .page.active {
       display: block;
+    }
+    
+    a {
+      color: #B8860B;
+      transition: color 0.3s ease;
+    }
+    
+    a:hover {
+      color: #DAA520;
     }
     
     @media (max-width: 768px) {
@@ -351,59 +407,59 @@
       <!-- Illustration Page (Main Page) -->
       <div id="illustration" class="page active">
         <div class="gallery">
-          <div class="gallery-item" data-title="Character Design: Elven Warrior">
-            <img src="images/illustration/illustration_chicken.jpg" alt="Character Design: Elven Warrior">
-          </div>
-          <div class="gallery-item" data-title="Environmental Concept Art">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_chicken.jpg">
+            <img src="images/illustration/illustration_chicken.jpg" alt="In the Hen House, Personal Project, Digital">
+          </div>          
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_tiny_doll_1.jpg">
             <img src="images/illustration/illustration_tiny_doll_1.jpg" alt="Environmental Concept Art">
           </div>
-          <div class="gallery-item" data-title="Comic Panel: Urban Fantasy">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_hansel.jpg">
             <img src="images/illustration/illustration_hansel.jpg" alt="Comic Panel: Urban Fantasy">
           </div>
-          <div class="gallery-item" data-title="Character Design: Cyberpunk Protagonist">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_lamb.jpg">
             <img src="images/illustration/illustration_lamb.jpg" alt="Character Design: Cyberpunk Protagonist">
           </div>
-          <div class="gallery-item" data-title="Book Illustration: Children's Fantasy">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_rabbit.jpg">
             <img src="images/illustration/illustration_rabbit.jpg" alt="Book Illustration: Children's Fantasy">
           </div>
-          <div class="gallery-item" data-title="Character Design: Steampunk Engineer">
-            <img src="images/illustration/illustration_ant.jpg" alt="Character Design: Steampunk Engineer">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_ant.jpg">
+            <img src="images/illustration/thumb_ant.jpg" alt="Character Design: Steampunk Engineer">
           </div>
-          <div class="gallery-item" data-title="Editorial Illustration: Science Magazine">
-            <img src="images/illustration/illustration_noah_4.jpg" alt="Editorial Illustration: Science Magazine">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_noah_4.jpg">
+            <img src="images/illustration/thumb_noah_4.jpg" alt="Editorial Illustration: Science Magazine">
           </div>
-          <div class="gallery-item" data-title="Character Design: Magical Creatures">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_noah_2.jpg">
             <img src="images/illustration/illustration_noah_2.jpg" alt="Character Design: Magical Creatures">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
-            <img src="images/illustration/illustration_noah_1.jpg" alt="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_noah_1.jpg">
+            <img src="images/illustration/thumb_noah_1.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_noah_characters.jpg">
             <img src="images/illustration/illustration_noah_characters.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_little_girl.jpg">
             <img src="images/illustration/illustration_little_girl.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_tiny_doll_2.jpg">
             <img src="images/illustration/illustration_tiny_doll_2.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_alligator_2.jpg">
             <img src="images/illustration/illustration_alligator_2.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_alligator_3.jpg">
             <img src="images/illustration/illustration_alligator_3.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
-            <img src="images/illustration/illustration_alligator_1.jpg" alt="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_alligator_1.jpg">
+            <img src="images/illustration/thumb_alligator_1.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
-            <img src="images/illustration/illustration_thumbelina_1.jpg" alt="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_thumbelina_1.jpg">
+            <img src="images/illustration/thumb_thumbelina_1.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
-            <img src="images/illustration/illustration_wishes.jpg" alt="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_wishes.jpg">
+            <img src="images/illustration/thumb_wishes.jpg" alt="Concept Art: Futuristic City">
           </div>
-          <div class="gallery-item" data-title="Concept Art: Futuristic City">
-            <img src="images/illustration/illustration_school.jpg" alt="Concept Art: Futuristic City">
+          <div class="gallery-item" data-title="" data-full-image="images/illustration/illustration_school.jpg">
+            <img src="images/illustration/thumb_school.jpg" alt="Concept Art: Futuristic City">
           </div>
         </div>
       </div>
@@ -411,38 +467,50 @@
       <!-- Sketchbook Page -->
       <div id="sketchbook" class="page">
         <div class="gallery">
-          <div class="gallery-item" data-title="Sketch: Character Study">
-            <img src="images/sketchbook/sketch_guitarist.jpg" alt="Sketch: Character Study">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_guitarist.jpg">
+            <img src="images/sketchbook/thumb_guitarist.jpg" alt="Sketch: Character Study">
           </div>
-          <div class="gallery-item" data-title="Sketch: Environment Concept">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_mom.jpg">
             <img src="images/sketchbook/sketch_mom.jpg" alt="Sketch: Environment Concept">
           </div>
-          <div class="gallery-item" data-title="Sketch: Motion Studies">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_sara.jpg">
             <img src="images/sketchbook/sketch_sara.jpg" alt="Sketch: Motion Studies">
           </div>
-          <div class="gallery-item" data-title="Sketch: Character Expressions">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_witch.jpg">
             <img src="images/sketchbook/sketch_witch.jpg" alt="Sketch: Character Expressions">
           </div>
-          <div class="gallery-item" data-title="Sketch: Quick Concepts">
-            <img src="images/sketchbook/sketch_ballerina.jpg" alt="Sketch: Quick Concepts">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_ballerina.jpg">
+            <img src="images/sketchbook/thumb_ballerina.jpg" alt="Sketch: Quick Concepts">
           </div>
-          <div class="gallery-item" data-title="Sketch: Creature Designs">
-            <img src="images/sketchbook/sketch_mermaid.jpg" alt="Sketch: Creature Designs">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_dancing_1.jpg">
+            <img src="images/sketchbook/sketch_dancing_1.jpg" alt="Sketch: Creature Designs">
           </div>
-          <div class="gallery-item" data-title="Sketch: Urban Scenes">
-            <img src="images/sketchbook/sketch_love.jpg" alt="Sketch: Urban Scenes">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_beach.jpg">
+            <img src="images/sketchbook/thumb_beach.jpg" alt="Sketch: Nature Studies">
           </div>
-          <div class="gallery-item" data-title="Sketch: Nature Studies">
-            <img src="images/sketchbook/sketch_tree.jpg" alt="Sketch: Nature Studies">
-          </div>
-          <div class="gallery-item" data-title="Sketch: Nature Studies">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_leaves.jpg">
             <img src="images/sketchbook/sketch_leaves.jpg" alt="Sketch: Nature Studies">
           </div>
-          <div class="gallery-item" data-title="Sketch: Nature Studies">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_rabbit_storyboard.jpg">
             <img src="images/sketchbook/sketch_rabbit_storyboard.jpg" alt="Sketch: Nature Studies">
           </div>
-          <div class="gallery-item" data-title="Sketch: Nature Studies">
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_hansel.jpg">
             <img src="images/sketchbook/sketch_hansel.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_bee.jpg">
+            <img src="images/sketchbook/thumb_bee.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_cassandra_1.jpg">
+            <img src="images/sketchbook/sketch_cassandra_1.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_cats.jpg">
+            <img src="images/sketchbook/thumb_cats.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_lamb.jpg">
+            <img src="images/sketchbook/sketch_lamb.jpg" alt="Sketch: Nature Studies">
+          </div>
+          <div class="gallery-item" data-title="" data-full-image="images/sketchbook/sketch_mermaid.jpg">
+            <img src="images/sketchbook/thumb_mermaid.jpg" alt="Sketch: Nature Studies">
           </div>
         </div>
       </div>
@@ -454,21 +522,34 @@
             <img src="images/other/profile.jpg" alt="Sara Freidoony Portrait">
           </div>
           <div class="about-content">
-            <p>Hello! I'm Sara Freidoony, an international illustrator and character designer with a passion for crafting imaginative worlds. I specialize in bringing stories to life through art, with a focus on children's perspectives—capturing the magic, wonder, and softness they see in the world around them. My illustrations blend gentle colors and expressive characters to evoke a sense of light and warmth.</p>
+            <h1 style="color: #B8860B; font-size: 48px; margin-bottom: 20px;">HELLO!</h1>
             
-            <p>With experience collaborating with publishers and magazines, I've honed my craft to create visuals that resonate and inspire. I'm driven by a love for storytelling and am always excited to explore new creative opportunities. Before pursuing my career in illustration, I graduated from the University of Tehran, one of the top art institutions in my home country, where I ranked third in my field and third in the national university entrance exam—a foundation that fuels my dedication to excellence.</p>
+            <p>Sara Freidoony is an international illustrator based in Iran, working remotely with clients around the world.</p>
             
-            <p>I'm eager to connect with clients and collaborators who share a love for whimsical, heartfelt design. Let's create something magical together!</p>
+            <p>As an artist devoted to children's literature, she creates book illustrations and digital art that captures the whimsical essence of childhood. She believes there's something magical about seeing the world from a child's perspective—their movements, personalities, and unique perceptions inspire every piece she creates.</p>
+            
+            <p>Since childhood, Sara has dreamed of building imaginative worlds filled with joy, emotion, and unexpected wonders. Today, her mission is to invite young readers on journeys through magical, fictional landscapes where anything is possible. She graduated with distinction in Painting from the <em>University of Tehran</em> and ranked 3rd among 100,000 contenders in the national entrance exam. Her work has appeared in top Iranian publications including <strong>Mehrsa Publishing</strong>, <strong>Poopak Magazine</strong>, and <strong>Neshane Amooz Publishing</strong>.</p>
+            
+            <p>In her spare time, Sara finds joy in playing classical piano and losing herself in the world of plays and literature.</p>
+
+            <p>Contact Sara for work inquiries at <a href="mailto:sarafreidoony@gmail.com"><strong>sarafreidoony@gmail.com</strong></a></p>
+
+            <p>Follow her work on <a href="https://instagram.com/art.of.sara.fr" target="_blank"><strong>Instagram</strong></a> and <a href="https://behance.net/sarafreidoony" target="_blank"><strong>Behance</strong></a>!</p>
           </div>
         </div>
       </div>
+
       
       <!-- Contact Page -->
       <div id="contact" class="page">
         <div class="contact-form">
           <h2>Get in Touch</h2>
           <p>Drop me a note using the form below. I look forward to hearing from you!</p>
-          <form id="contactForm">
+          <!-- Using Formspree to handle form submissions -->
+          <form id="contactForm" action="https://formspree.io/f/meoaqlpa" method="POST">
+            <input type="hidden" name="_subject" value="New contact from Portfolio Website">
+            <!-- Redirect back to your site after submission -->
+            <input type="hidden" name="_next" value="https://sarafreidoony.com/index.html?submitted=true#contact">
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" id="name" name="name" required>
@@ -539,6 +620,8 @@
       <div class="lightbox-caption"></div>
     </div>
     <button class="next-btn">&gt;</button>
+    <div class="navigation-overlay left-overlay"></div>
+    <div class="navigation-overlay right-overlay"></div>
   </div>
   
   <script>
@@ -546,6 +629,22 @@
       // Page navigation
       const navLinks = document.querySelectorAll('nav a, .logo-container a');
       const pages = document.querySelectorAll('.page');
+      
+      // Set initial active state for navigation based on which page is currently active
+      const setInitialActiveNav = () => {
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+          const activePageId = activePage.id;
+          navLinks.forEach(link => {
+            if (link.getAttribute('data-page') === activePageId) {
+              link.classList.add('active');
+            }
+          });
+        }
+      };
+      
+      // Call immediately to set initial state
+      setInitialActiveNav();
       
       navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -559,6 +658,12 @@
           
           // Show target page
           document.getElementById(targetPage).classList.add('active');
+          
+          // Update active class on navigation links
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          this.classList.add('active');
         });
       });
       
@@ -577,25 +682,34 @@
         
         let currentIndex = 0;
         let currentGalleryItems = [];
-        
-        // Open lightbox
-        galleryItems.forEach((item, index) => {
-          item.addEventListener('click', () => {
-            currentIndex = index;
-            currentGalleryItems = galleryItems;
-            
-            const imgSrc = item.querySelector('img').getAttribute('src');
-            const imgAlt = item.querySelector('img').getAttribute('alt');
-            const imgTitle = item.getAttribute('data-title');
-            
-            lightboxImage.setAttribute('src', imgSrc);
-            lightboxImage.setAttribute('alt', imgAlt);
+              
+      // Open lightbox
+      galleryItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          currentIndex = index;
+          currentGalleryItems = galleryItems;
+          
+          // Use the full-size image path from data attribute
+          const imgSrc = item.getAttribute('data-full-image');
+          const imgAlt = item.querySelector('img').getAttribute('alt');
+          const imgTitle = item.getAttribute('data-title'); // Retrieve the title from the data attribute
+          
+          // Update lightbox image source and caption
+          lightboxImage.setAttribute('src', imgSrc);
+          lightboxImage.setAttribute('alt', imgAlt);
+          
+          // Make sure the title is displayed in the caption
+          if (imgTitle) {
             lightboxCaption.textContent = imgTitle;
-            
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
-          });
+            lightboxCaption.style.display = 'block';
+          } else {
+            lightboxCaption.style.display = 'none';
+          }
+          
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
         });
+      });
       };
       
       // Setup lightbox for both galleries
@@ -627,8 +741,10 @@
       nextBtn.addEventListener('click', () => {
         const activePage = document.querySelector('.page.active');
         const galleryItems = activePage.querySelectorAll('.gallery-item');
+        
+        // Find the current image index by comparing full image paths
         let currentIndex = Array.from(galleryItems).findIndex(item => 
-          item.querySelector('img').getAttribute('src') === lightboxImage.getAttribute('src')
+          item.getAttribute('data-full-image') === lightboxImage.getAttribute('src')
         );
         
         currentIndex = (currentIndex + 1) % galleryItems.length;
@@ -639,13 +755,43 @@
       prevBtn.addEventListener('click', () => {
         const activePage = document.querySelector('.page.active');
         const galleryItems = activePage.querySelectorAll('.gallery-item');
+        
+        // Find the current image index by comparing full image paths
         let currentIndex = Array.from(galleryItems).findIndex(item => 
-          item.querySelector('img').getAttribute('src') === lightboxImage.getAttribute('src')
+          item.getAttribute('data-full-image') === lightboxImage.getAttribute('src')
         );
         
         currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
         updateLightboxContent(galleryItems[currentIndex]);
       });
+      
+      // Update lightbox content
+      function updateLightboxContent(item) {
+        // Use the full-size image path from data attribute
+        const imgSrc = item.getAttribute('data-full-image');
+        const imgAlt = item.querySelector('img').getAttribute('alt');
+        const imgTitle = item.getAttribute('data-title');
+        
+        // Fade out effect
+        lightboxImage.style.opacity = '0';
+        
+        // Change the image after a short delay (for smooth transition)
+        setTimeout(() => {
+          lightboxImage.setAttribute('src', imgSrc);
+          lightboxImage.setAttribute('alt', imgAlt);
+          
+          // Make sure the title is displayed in the caption
+          if (imgTitle) {
+            lightboxCaption.textContent = imgTitle;
+            lightboxCaption.style.display = 'block';
+          } else {
+            lightboxCaption.style.display = 'none';
+          }
+          
+          // Fade in effect
+          lightboxImage.style.opacity = '1';
+        }, 300);
+      }
       
       // Keyboard navigation
       document.addEventListener('keydown', (e) => {
@@ -661,16 +807,13 @@
         }
       });
       
-      // Update lightbox content
-      function updateLightboxContent(item) {
-        const imgSrc = item.querySelector('img').getAttribute('src');
-        const imgAlt = item.querySelector('img').getAttribute('alt');
-        const imgTitle = item.getAttribute('data-title');
-        
-        lightboxImage.setAttribute('src', imgSrc);
-        lightboxImage.setAttribute('alt', imgAlt);
-        lightboxCaption.textContent = imgTitle;
-      }
+      // Prevent right-click on images
+      document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+          e.preventDefault();
+          return false;
+        }
+      });
       
       // Contact form functionality
       const contactForm = document.getElementById('contactForm');
@@ -683,12 +826,41 @@
         });
       }
     });
+    
     document.addEventListener("DOMContentLoaded", function () {
         const lightboxImage = document.querySelector(".lightbox-image");
+        const leftOverlay = document.querySelector(".left-overlay");
+        const rightOverlay = document.querySelector(".right-overlay");
         let scale = 1;
         let isDragging = false;
         let startX, startY, moveX = 0, moveY = 0;
+        
+        // Add click handlers for side navigation overlays
+        if (leftOverlay) {
+          leftOverlay.addEventListener("click", function(e) {
+            // Only navigate if not zoomed in
+            if (scale === 1) {
+              document.querySelector(".prev-btn").click();
+              e.stopPropagation();
+            }
+          });
+        }
+        
+        if (rightOverlay) {
+          rightOverlay.addEventListener("click", function(e) {
+            // Only navigate if not zoomed in
+            if (scale === 1) {
+              document.querySelector(".next-btn").click();
+              e.stopPropagation();
+            }
+          });
+        }
 
+        // Set initial opacity for fade transitions
+        if (lightboxImage) {
+          lightboxImage.style.opacity = '1';
+        }
+        
         // Zoom functionality using mouse wheel
         lightboxImage.addEventListener("wheel", function (e) {
             e.preventDefault();
