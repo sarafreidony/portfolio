@@ -3,53 +3,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Page navigation
-  const navLinks = document.querySelectorAll('nav a, .logo-container a');
-  const pages = document.querySelectorAll('.page');
-  
-  // Set initial active state for navigation based on which page is currently active
-  const setInitialActiveNav = () => {
-    const activePage = document.querySelector('.page.active');
-    if (activePage) {
-      const activePageId = activePage.id;
-      navLinks.forEach(link => {
-        if (link.getAttribute('data-page') === activePageId) {
-          link.classList.add('active');
-        }
-      });
-    }
-  };
-  
-  // Call immediately to set initial state
-  setInitialActiveNav();
-  
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetPage = this.getAttribute('data-page');
-      
-      // Hide all pages
-      pages.forEach(page => {
-        page.classList.remove('active');
-      });
-      
-      // Show target page
-      document.getElementById(targetPage).classList.add('active');
-      
-      // Update active class on navigation links
-      navLinks.forEach(navLink => {
-        navLink.classList.remove('active');
-      });
-      this.classList.add('active');
-    });
-  });
-  
   // Lightbox functionality for both galleries
-  const setupGallery = (galleryId) => {
-    const gallery = document.getElementById(galleryId);
-    if (!gallery) return;
-    
-    const galleryItems = gallery.querySelectorAll('.gallery-item');
+  const setupGallery = () => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
     const lightbox = document.querySelector('.lightbox');
     const lightboxImage = document.querySelector('.lightbox-image');
     const lightboxCaption = document.querySelector('.lightbox-caption');
@@ -57,14 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     
+    if (galleryItems.length === 0) return; // No gallery on this page
+    
     let currentIndex = 0;
-    let currentGalleryItems = [];
-          
+    
     // Open lightbox
     galleryItems.forEach((item, index) => {
       item.addEventListener('click', () => {
         currentIndex = index;
-        currentGalleryItems = galleryItems;
         
         // Use the full-size image path from data attribute
         const imgSrc = item.getAttribute('data-full-image');
@@ -87,63 +43,39 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
       });
     });
-  };
-  
-  // Setup lightbox for both galleries
-  setupGallery('illustration');
-  setupGallery('sketchbook');
-  
-  // Close lightbox
-  const lightbox = document.querySelector('.lightbox');
-  const closeLightbox = document.querySelector('.close-lightbox');
-  const lightboxImage = document.querySelector('.lightbox-image');
-  const lightboxCaption = document.querySelector('.lightbox-caption');
-  const prevBtn = document.querySelector('.prev-btn');
-  const nextBtn = document.querySelector('.next-btn');
-  
-  closeLightbox.addEventListener('click', () => {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = ''; // Re-enable scrolling
-  });
-  
-  // Close on click outside image
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
+    
+    // Close lightbox
+    closeLightbox.addEventListener('click', () => {
       lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-  
-  // Next image
-  nextBtn.addEventListener('click', () => {
-    const activePage = document.querySelector('.page.active');
-    const galleryItems = activePage.querySelectorAll('.gallery-item');
+      document.body.style.overflow = ''; // Re-enable scrolling
+    });
     
-    // Find the current image index by comparing full image paths
-    let currentIndex = Array.from(galleryItems).findIndex(item => 
-      item.getAttribute('data-full-image') === lightboxImage.getAttribute('src')
-    );
+    // Close on click outside image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
     
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    updateLightboxContent(galleryItems[currentIndex]);
-  });
-  
-  // Previous image
-  prevBtn.addEventListener('click', () => {
-    const activePage = document.querySelector('.page.active');
-    const galleryItems = activePage.querySelectorAll('.gallery-item');
+    // Next image
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      updateLightboxContent(galleryItems[currentIndex]);
+    });
     
-    // Find the current image index by comparing full image paths
-    let currentIndex = Array.from(galleryItems).findIndex(item => 
-      item.getAttribute('data-full-image') === lightboxImage.getAttribute('src')
-    );
-    
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    updateLightboxContent(galleryItems[currentIndex]);
-  });
+    // Previous image
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      updateLightboxContent(galleryItems[currentIndex]);
+    });
+  };
   
   // Update lightbox content
   function updateLightboxContent(item) {
+    const lightboxImage = document.querySelector('.lightbox-image');
+    const lightboxCaption = document.querySelector('.lightbox-caption');
+    
     // Use the full-size image path from data attribute
     const imgSrc = item.getAttribute('data-full-image');
     const imgAlt = item.querySelector('img').getAttribute('alt');
@@ -188,8 +120,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
   }
   
-  // Keyboard navigation
+  // Keyboard navigation for lightbox
   document.addEventListener('keydown', (e) => {
+    const lightbox = document.querySelector('.lightbox');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    
     if (!lightbox.classList.contains('active')) return;
     
     if (e.key === 'Escape') {
@@ -202,28 +138,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Prevent right-click on images
-  document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-      return false;
+  // Initialize the gallery functionality
+  setupGallery();
+  
+  // Add active class to current nav item based on URL
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('nav a');
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPage) {
+      link.classList.add('active');
+    } else if (currentPage === '' && href === 'index.html') {
+      // Handle the case when URL doesn't have a file name (root of site)
+      link.classList.add('active');
     }
   });
   
-  // Contact form functionality
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // In a real implementation, you would send the form data to a server
-      alert('Thank you for your message! I will get back to you soon.');
-      contactForm.reset();
-    });
-  }
-});
-
-// Zoom and pan functionality for lightbox images
-document.addEventListener("DOMContentLoaded", function () {
+  // Zoom and pan functionality for lightbox images
   const lightboxImage = document.querySelector(".lightbox-image");
   const leftOverlay = document.querySelector(".left-overlay");
   const rightOverlay = document.querySelector(".right-overlay");
@@ -299,4 +231,23 @@ document.addEventListener("DOMContentLoaded", function () {
     moveY = 0;
     lightboxImage.style.transform = `scale(1) translate(0, 0)`;
   });
+  
+  // Prevent right-click on images
+  document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+  // Contact form functionality
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // In a real implementation, you would send the form data to a server
+      alert('Thank you for your message! I will get back to you soon.');
+      contactForm.reset();
+    });
+  }
 });
