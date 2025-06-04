@@ -77,7 +77,7 @@ nav ul li a.active {
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  height: 300px;
+  aspect-ratio: 1 / 1; /* Maintains square aspect ratio */
 }
 
 .gallery-item img {
