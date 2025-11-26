@@ -128,6 +128,13 @@ nav ul li a.active {
 
 .contact-form h2 {
   color: #B8860B;
+  text-align: center; /* Center the heading */
+  margin-bottom: 15px; /* Add space below the heading */
+}
+
+.contact-form p {
+  text-align: center; /* Center the paragraph */
+  margin-bottom: 30px; /* Add space below the introductory text */
 }
 
 .form-group {
