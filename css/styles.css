@@ -341,6 +341,55 @@ a:hover {
   color: #DAA520;
 }
 
+.publishers-section {
+  padding: 40px 0;
+  overflow: hidden; /* Hide overflow for the scrolling effect */
+  position: relative;
+}
+
+.publisher-logos-wrapper {
+  display: flex;
+  white-space: nowrap; /* Keep logos in a single line */
+  animation: scrollLogos 20s linear infinite; /* Animation definition */
+}
+
+.publisher-logos-wrapper:hover {
+  animation-play-state: paused; /* Pause animation on hover */
+}
+
+.publisher-logo-item {
+  flex: 0 0 auto; /* Prevent items from shrinking */
+  margin: 0 20px; /* Space between logos */
+  display: inline-block; /* Ensure items are inline for scrolling */
+}
+
+.publisher-logos-wrapper img {
+  width: 100px; /* Fixed width for circular logos */
+  height: 100px; /* Fixed height for circular logos */
+  object-fit: contain;
+  border-radius: 50%; /* Makes images circular */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 10px; /* Add some padding inside the circle */
+  background-color: #fff; /* White background for logos */
+  vertical-align: middle; /* Align images vertically */
+}
+
+.publisher-logos-wrapper img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Keyframe animation for infinite horizontal scroll */
+@keyframes scrollLogos {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%); /* Scroll exactly half the width to repeat */
+  }
+}
+
 @media (max-width: 768px) {
   nav ul {
     flex-wrap: wrap;
