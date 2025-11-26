@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Open lightbox
     galleryItems.forEach((item, index) => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        if (!item.hasAttribute('data-full-image')) {
+          return; // This is a link to a page, not a lightbox item.
+        }
+        e.preventDefault(); // Prevent default action for lightbox items.
+
         currentIndex = index;
         
         // Use the full-size image path from data attribute
