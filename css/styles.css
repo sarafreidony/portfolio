@@ -431,4 +431,9 @@ a:hover {
   .social-links a {
     margin: 8px;
   }
+
+  .contact-image {
+    max-width: 100%; /* Ensures the image scales down on smaller screens */
+    height: auto;
+  }
 }
