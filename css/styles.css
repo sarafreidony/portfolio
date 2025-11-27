@@ -355,19 +355,23 @@ a:hover {
 }
 
 .publisher-logos-wrapper {
-  display: flex;
-  white-space: nowrap; /* Keep logos in a single line */
-  animation: scrollLogos 20s linear infinite; /* Animation definition */
+  display: flex; /* Arrange tracks side-by-side */
+  width: max-content; /* Allow the wrapper to expand to contain all tracks */
+  animation: scrollLogos var(--scroll-speed) linear infinite; /* Animation applied to the wrapper */
 }
 
 .publisher-logos-wrapper:hover {
   animation-play-state: paused; /* Pause animation on hover */
 }
 
+.publisher-logos-track {
+  display: flex;
+  flex-shrink: 0; /* Prevent tracks from shrinking */
+}
+
 .publisher-logo-item {
-  flex: 0 0 auto; /* Prevent items from shrinking */
+  flex-shrink: 0; /* Prevent items from shrinking */
   margin: 0 20px; /* Space between logos */
-  display: inline-block; /* Ensure items are inline for scrolling */
 }
 
 .publisher-logos-wrapper img {
@@ -393,7 +397,7 @@ a:hover {
     transform: translateX(0%);
   }
   100% {
-    transform: translateX(-50%); /* Scroll exactly half the width to repeat */
+    transform: translateX(-50%); /* Scroll exactly half the width of the wrapper (one full track) */
   }
 }
 
@@ -435,5 +439,16 @@ a:hover {
   .contact-image {
     max-width: 100%; /* Ensures the image scales down on smaller screens */
     height: auto;
+  }
+}
+
+/* Define default scroll speed and adjust for smaller screens */
+.publishers-section {
+  --scroll-speed: 20s; /* Default scroll speed for larger screens */
+}
+
+@media (max-width: 768px) {
+  .publishers-section {
+    --scroll-speed: 10s; /* Faster scroll on smaller screens */
   }
 }
