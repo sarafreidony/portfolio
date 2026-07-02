@@ -17,30 +17,64 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentIndex = 0;
     
+    const parseFrames = (item) => {
+      const frameString = item.getAttribute('data-frames');
+      if (!frameString) return [];
+      return frameString.split(',').map(frame => {
+        const [src, title = ''] = frame.split('|').map(part => part.trim());
+        return { src, title };
+      }).filter(frame => frame.src);
+    };
+
+    const setFrame = (item, frameIndex) => {
+      const frames = item._frames || (item._frames = parseFrames(item));
+      if (!frames.length) return;
+      const normalizedIndex = ((frameIndex % frames.length) + frames.length) % frames.length;
+      const frame = frames[normalizedIndex];
+
+      item.dataset.currentFrame = normalizedIndex;
+      item.dataset.fullImage = frame.src;
+      item.dataset.title = frame.title || item.dataset.title || '';
+
+      const img = item.querySelector('img');
+      if (img) {
+        img.src = frame.src;
+        img.alt = frame.title || img.alt;
+      }
+    };
+
+    const openLightbox = (index) => {
+      currentIndex = (index + galleryItems.length) % galleryItems.length;
+      updateLightboxContent(galleryItems[currentIndex]);
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    
     // Open lightbox
     galleryItems.forEach((item, index) => {
+      const frames = parseFrames(item);
+      if (frames.length) {
+        item._frames = frames;
+        setFrame(item, Number(item.dataset.currentFrame || 0));
+      }
+
       item.addEventListener('click', () => {
-        currentIndex = index;
-        
-        // Use the full-size image path from data attribute
-        const imgSrc = item.getAttribute('data-full-image');
-        const imgAlt = item.querySelector('img').getAttribute('alt');
-        const imgTitle = item.getAttribute('data-title'); // Retrieve the title from the data attribute
-        
-        // Update lightbox image source and caption
-        lightboxImage.setAttribute('src', imgSrc);
-        lightboxImage.setAttribute('alt', imgAlt);
-        
-        // Make sure the title is displayed in the caption
-        if (imgTitle) {
-          lightboxCaption.textContent = imgTitle;
-          lightboxCaption.style.display = 'block';
-        } else {
-          lightboxCaption.style.display = 'none';
-        }
-        
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+        openLightbox(index);
+      });
+    });
+
+    // Book card arrow navigation
+    const bookArrowButtons = document.querySelectorAll('.book-arrow');
+    bookArrowButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const direction = button.dataset.direction;
+        const item = button.closest('.gallery-item');
+        if (!item) return;
+
+        const currentFrame = Number(item.dataset.currentFrame || 0);
+        const nextFrame = direction === 'prev' ? currentFrame - 1 : currentFrame + 1;
+        setFrame(item, nextFrame);
       });
     });
     
@@ -58,16 +92,31 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
+    const getCurrentFrameIndex = (item) => Number(item.dataset.currentFrame || 0);
+    const getFrameCount = (item) => (item._frames || []).length;
+
     // Next image
     nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % galleryItems.length;
-      updateLightboxContent(galleryItems[currentIndex]);
+      const currentItem = galleryItems[currentIndex];
+      if (getFrameCount(currentItem) > 1) {
+        setFrame(currentItem, getCurrentFrameIndex(currentItem) + 1);
+        updateLightboxContent(currentItem);
+      } else {
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        updateLightboxContent(galleryItems[currentIndex]);
+      }
     });
     
     // Previous image
     prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-      updateLightboxContent(galleryItems[currentIndex]);
+      const currentItem = galleryItems[currentIndex];
+      if (getFrameCount(currentItem) > 1) {
+        setFrame(currentItem, getCurrentFrameIndex(currentItem) - 1);
+        updateLightboxContent(currentItem);
+      } else {
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        updateLightboxContent(galleryItems[currentIndex]);
+      }
     });
   };
   

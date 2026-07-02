@@ -93,6 +93,56 @@ nav ul li a.active {
   transform: scale(1.03);
 }
 
+.book-item {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.book-description {
+  text-align: center;
+  color: #444444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 0 10px;
+}
+
+.book-description strong {
+  color: #B8860B;
+}
+
+.gallery-item .book-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.book-arrow {
+  pointer-events: auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.88);
+  color: #333333;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.book-arrow:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 1);
+}
+
 /* About Page */
 .about-container {
   display: flex;
@@ -226,7 +276,7 @@ button[type="submit"]:hover {
   font-size: 1rem;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 4px;
-  display: inline-block;
+  display: none;
   margin-top: 0;
 }
 
