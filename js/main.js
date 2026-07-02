@@ -77,6 +77,41 @@ document.addEventListener('DOMContentLoaded', function() {
         setFrame(item, nextFrame);
       });
     });
+
+    // Touch/Swipe support for gallery items
+    const setupGallerySwipe = () => {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const minSwipeDistance = 50; // Minimum distance for a swipe
+
+      galleryItems.forEach((item) => {
+        item.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].clientX;
+        }, false);
+
+        item.addEventListener('touchend', (e) => {
+          touchEndX = e.changedTouches[0].clientX;
+          handleGallerySwipe(item);
+        }, false);
+
+        const handleGallerySwipe = (item) => {
+          const distance = touchStartX - touchEndX;
+          if (Math.abs(distance) > minSwipeDistance) {
+            const currentFrame = Number(item.dataset.currentFrame || 0);
+            if (distance > 0) {
+              // Swiped left, show next frame
+              setFrame(item, currentFrame + 1);
+            } else {
+              // Swiped right, show previous frame
+              setFrame(item, currentFrame - 1);
+            }
+          }
+        };
+      });
+    };
+
+    setupGallerySwipe();
     
     // Close lightbox
     closeLightbox.addEventListener('click', () => {
@@ -186,9 +221,44 @@ document.addEventListener('DOMContentLoaded', function() {
       prevBtn.click();
     }
   });
-  
+
+  // Touch/Swipe support for lightbox
+  const setupLightboxSwipe = () => {
+    const lightbox = document.querySelector('.lightbox');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50; // Minimum distance for a swipe
+
+    lightbox.addEventListener('touchstart', (e) => {
+      // Only track swipe if not zoomed in (to avoid conflicts with pan)
+      if (scale === 1) {
+        touchStartX = e.changedTouches[0].clientX;
+      }
+    }, false);
+
+    lightbox.addEventListener('touchend', (e) => {
+      // Only handle swipe if not zoomed in
+      if (scale === 1) {
+        touchEndX = e.changedTouches[0].clientX;
+        const distance = touchStartX - touchEndX;
+        if (Math.abs(distance) > minSwipeDistance) {
+          if (distance > 0) {
+            // Swiped left, show next
+            nextBtn.click();
+          } else {
+            // Swiped right, show previous
+            prevBtn.click();
+          }
+        }
+      }
+    }, false);
+  };
+
   // Initialize the gallery functionality
   setupGallery();
+  setupLightboxSwipe();
   
   // Add active class to current nav item based on URL
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
