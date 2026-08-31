@@ -26,6 +26,20 @@ document.addEventListener('DOMContentLoaded', function() {
       }).filter(frame => frame.src);
     };
 
+    // Warms the browser's cache for a frame so a later swap is instant.
+    // Safe to call repeatedly - the Image object is discarded, the
+    // decoded bytes stay in the browser's HTTP cache.
+    const preloadFrame = (item, frameIndex) => {
+      const frames = item._frames;
+      if (!frames || !frames.length) return;
+      const normalizedIndex = ((frameIndex % frames.length) + frames.length) % frames.length;
+      const frame = frames[normalizedIndex];
+      if (!frame || frame._preloaded) return;
+      frame._preloaded = true;
+      const preloadImg = new Image();
+      preloadImg.src = frame.src;
+    };
+
     const setFrame = (item, frameIndex) => {
       const frames = item._frames || (item._frames = parseFrames(item));
       if (!frames.length) return;
@@ -41,6 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = frame.src;
         img.alt = frame.title || img.alt;
       }
+
+      // Preload the frames on either side so the next click feels instant
+      // instead of waiting on a fresh network request.
+      preloadFrame(item, normalizedIndex + 1);
+      preloadFrame(item, normalizedIndex - 1);
     };
 
     const openLightbox = (index) => {
