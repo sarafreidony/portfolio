@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const parseFrames = (item) => {
       const frameString = item.getAttribute('data-frames');
       if (!frameString) return [];
-      return frameString.split(',').map(frame => {
+      const thumbs = (item.getAttribute('data-thumbs') || '').split(',').map(s => s.trim());
+      return frameString.split(',').map((frame, i) => {
         const [src, title = ''] = frame.split('|').map(part => part.trim());
-        return { src, title };
+        return { src, title, thumb: thumbs[i] || src };
       }).filter(frame => frame.src);
     };
 
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const img = item.querySelector('img');
       if (img) {
-        img.src = frame.src;
+        img.src = frame.thumb;
         img.alt = frame.title || img.alt;
       }
 
