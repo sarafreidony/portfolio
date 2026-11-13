@@ -111,6 +111,18 @@ nav ul li a.active {
   color: #B8860B;
 }
 
+.book-link {
+  display: inline-block;
+  margin-top: 4px;
+  color: #444444;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.book-link[hidden] {
+  display: none;
+}
+
 .gallery-item .book-overlay {
   position: absolute;
   inset: 0;
